@@ -23,3 +23,12 @@ add the executable path to the environment variable path in windows
 ```bash
 portkiller 8080
 ```
+
+## Notes
+- some process with specific port require admin privilege to kill  
+
+![port-killer-ex](./docs/port-killer-ex.png)
+
+when running as admin  
+
+![port-killer-ex-admin](./docs/port-killer-ex-admin.png)
