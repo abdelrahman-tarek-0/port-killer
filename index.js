@@ -13,18 +13,34 @@ const getProcess = async (port) => {
 }
 
 const killProcess = async (pid) => {
-   const { stdout } = await exec(`taskkill /F /PID ${pid}`)
-   return stdout
+   try {
+      const { stdout, stderr } = await exec(`taskkill /F /PID ${pid}`)
+      if (stderr) throw stderr
+
+      return stdout
+   } catch (error) {
+      if (!error?.stdout && !error?.stderr) return null
+
+      if (error?.stderr?.includes('Access is denied.')) throw `${error?.stderr}Try running this command as administrator`
+
+      if (error?.stderr) throw error?.stderr
+
+      throw error
+   }
 }
 
 const main = async (port) => {
-   const process = await getProcess(port)
-   const pid = process?.split(' ')?.filter((item) => item)?.[4]
+   try {
+      const process = await getProcess(port)
+      const pid = process?.split(' ')?.filter((item) => item)?.[4]
 
-   if (!pid) return console.log(`Process not found on port ${port}`)
+      if (!pid) return console.log(`Process not found on port ${port}`)
 
-   await killProcess(pid)
-   console.log(`Process ${pid} killed`)
+      await killProcess(pid)
+      console.log(`Process ${pid} killed`)
+   } catch (error) {
+        console.log(error)
+   }
 }
 
 main(process.argv[2] || null)
