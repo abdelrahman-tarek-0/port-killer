@@ -8,5 +8,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bin": "./index.js",
+  "pkg":{
+    "targets": [
+      "win"
+    ]
+  }
 }
