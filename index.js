@@ -17,15 +17,14 @@ const killProcess = async (pid) => {
    return stdout
 }
 
-const main = async () => {
-   const port = 3000
+const main = async (port) => {
    const process = await getProcess(port)
-   const pid = process.split(' ')?.filter((item) => item)?.[4]
-   
+   const pid = process?.split(' ')?.filter((item) => item)?.[4]
+
    if (!pid) return console.log(`Process not found on port ${port}`)
 
    await killProcess(pid)
    console.log(`Process ${pid} killed`)
 }
 
-main()
+main(process.argv[2] || null)
